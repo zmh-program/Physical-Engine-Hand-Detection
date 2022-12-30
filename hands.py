@@ -1,4 +1,5 @@
 from typing import List
+from numpy import average
 from camera import WIDTH, HEIGHT
 import pygame
 import pymunk
@@ -122,12 +123,16 @@ class hand(object):
 
     def debug_hand_lines(self, surface: pygame.Surface):
         if self.cache:
-            for body, shape, tensor in zip(self.hdlines_obj,
-                                           self.hdlines_shp,
-                                           [tensor for tensors in self.as_bone_fingers(self.cache)
-                                            for tensor in self.to_line_points(tensors)]):
-                # pygame.draw.line(surface, (255, 255, 255), *tensor, 5)
-                shape.unsafe_set_endpoints(*tensor)
+            for body, shape, tensors in zip(self.hdlines_obj,
+                                            self.hdlines_shp,
+                                            [tensor for tensors in self.as_bone_fingers(self.cache)
+                                             for tensor in self.to_line_points(tensors)]):
+                x, y = map(lambda lst: average(lst), zip(*tensors))
+                a, b = map(lambda lst: average(lst), zip(shape.a, shape.b))
+                # body.velocity = HAND_SPEED * (x - a), HAND_SPEED * (y - b)
+                body.position = x, y
+                body.angle = 0
+                shape.unsafe_set_endpoints(*[(xt - x, yt - y) for xt, yt in tensors])
 
     def update(self, hand_landmarks=None):
         if hand_landmarks:
@@ -146,8 +151,7 @@ class hand(object):
         return self.cache
 
     def update_landmarks(self, hand_landmarks):
-        for landmark, finger in zip(hand_landmarks, self.fingers_obj):
+        for (x, y), finger in zip(hand_landmarks, self.fingers_obj):
             # converting the coordinates
-            x, y = landmark
             # update the velocity
             finger.velocity = HAND_SPEED * (x - finger.position[0]), HAND_SPEED * (y - finger.position[1])

@@ -1,9 +1,8 @@
 # 🎉Physical-Engine-Hand-Detection✨
 
-A game project using Mediapipe, Pygame, Pymunk and OpenCV
+✈️A game project using 🍏Mediapipe, 🍅Pygame, 🌵Pymunk and 🍂OpenCV
 
-
-## requirements
+## 🍀requirements
 
 ```python
 absl-py==1.3.0
@@ -27,5 +26,5 @@ pyparsing==3.0.9
 python-dateutil==2.8.2
 six==1.16.0
 wincertstore==0.2
-
 ```
+

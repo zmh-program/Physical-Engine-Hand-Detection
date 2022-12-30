@@ -17,7 +17,7 @@ class balls(object):
     def create(self, nums=1) -> None:
         for num, data in enumerate([(300 + numpy.random.uniform(-30, 30), -10) for _ in range(nums)]):
             body = pymunk.Body(100.0, 1666, body_type=pymunk.Body.DYNAMIC)
-            body.velocity = 0, 1000
+            body.velocity = 0, 500
             body.position = data
             shape = pymunk.Circle(body, BALL_RADIUS)
             shape.friction = 1
@@ -42,5 +42,5 @@ class balls(object):
 
     def update(self):
         self.detect()
-        if numpy.random.uniform() > 0.9:
-            self.create(numpy.random.randint(1, 5))
+        if numpy.random.uniform() > 0.94:
+            self.create(numpy.random.randint(2, 5))

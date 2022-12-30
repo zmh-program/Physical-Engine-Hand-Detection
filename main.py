@@ -6,7 +6,8 @@ import pymunk.pygame_util
 import hands
 from camera import *
 
-fps = 60
+fps = 30
+exact = 20
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 space = pymunk.Space()
@@ -53,7 +54,8 @@ with mediapipe.solutions.hands.Hands(min_detection_confidence=0.7, min_tracking_
 
         surf = read_capture()
         screen.blit(cvimage_to_pygame(surf), [0, 0])
-        space.step(1 / fps)
+        for _ in range(exact):
+            space.step(1 / fps / exact)
         space.debug_draw(options)
         _hands.parser(surf)
         clock.tick(fps)
